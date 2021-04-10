@@ -47,8 +47,18 @@ import java.util.List;
 
 public class AddTwoNumbers{
   public static void main(String[] args) {
-    Solution solution = new AddTwoNumbers().new Solution();
-    ListNode l1 = new  AddTwoNumbers().new ListNode();
+      ListNode a1 = new ListNode(2);
+      ListNode a2 = new ListNode(4);
+      ListNode a3 = new ListNode(3);
+      a1.next = a2;
+      a2.next = a3;
+
+      ListNode b1 = new ListNode(5);
+      ListNode b2 = new ListNode(6);
+      ListNode b3 = new ListNode(4);
+      b1.next = b2;
+      b2.next = b3;
+      ListNode resultNode = new AddTwoNumbers().new Solution().addTwoNumbers(a1, b1);
 
     }
   
@@ -65,27 +75,48 @@ public class AddTwoNumbers{
  */
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode head1 = null;
-        while (null != l1.next )
-        {
-            head1 = l1.next;
-            l1 = l1.next;
-        }
 
-        ListNode head2 = null;
-        while (null != l2.next){
-            head2 = l2.next;
-            l2 = l2.next;
+        ListNode head = null, tail = null;
+        int carry = 0;
+        while (l1 != null || l2 != null) {
+            int n1 = (l1 != null) ? l1.value : 0;
+            int n2 = (l2 != null) ? l2.value : 0;
+            int sum = n1 + n2 + carry;
+            if (head == null) {
+                //初始化头节点尾节点
+                head = tail = new ListNode(sum % 10);
+            } else {
+                tail.next = new ListNode(sum % 10);
+                tail = tail.next;
+            }
+            //记录进位
+            carry = sum / 10;
+            if (l1 != null) {
+                //下一个节点提到前面
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                //下一个节点提到前面
+                l2 = l2.next;
+            }
         }
-        return  null;
+        if (carry > 0) {
+            tail.next = new ListNode(carry);
+        }
+        return head;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode() {}
-    ListNode(int val) { this.val = val; }
-    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+static class ListNode {
+
+    private int value;
+    private ListNode next;
+
+    public ListNode() {
+    }
+
+    public ListNode(int value) {
+        this.value = value;
+    }
 }
 }
